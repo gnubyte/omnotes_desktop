@@ -1,0 +1,22 @@
+{
+  "name": "omnotes",
+  "version": "1.0.0",
+  "description": "Openmobo Note taking application",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": ".git"
+  },
+  "keywords": [
+    "Openmobo"
+  ],
+  "author": "Patrick Hastings",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^4.1.4",
+    "marked": "^0.6.2"
+  }
+}
