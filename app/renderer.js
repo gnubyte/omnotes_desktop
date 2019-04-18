@@ -1,3 +1,5 @@
+const { remote, ipcRenderer } = require('electron');
+const mainProcess = remote.require('./main.js');
 const marked = require('marked');
 
 // ----- Variables
@@ -12,7 +14,7 @@ const showFileButton = document.querySelector('#show-file');
 const openInDefaultButton = document.querySelector('#open-in-default');
 
 ///////////////////
-// ------ Functions 
+// ------ Functions
 const renderMarkdownToHtml = (markdown) => {
     htmlView.innerHTML = marked(markdown, { sanitize: true});
 };
@@ -23,4 +25,15 @@ markdownView.addEventListener('keyup', (event) => {
     const currentContent = event.target.value;
     renderMarkdownToHtml(currentContent);
 });
+
+openFileButton.addEventListener('click', () => {
+    mainProcess.getFileFromUser();
+});
+
+ipcRenderer.on('file-opened', (event, file, content) => {
+    //listen from mainprocess on channel file-opened for contents and filename
+    //takes two args: channel and a callback function w/ the action to take when renderer process rcvs msg on the channel
+    markdownView.value = content;
+    renderMarkdownToHtml(content);
+})
 //////////////////
