@@ -12,7 +12,7 @@ const revertButton = document.querySelector('#revert');
 const saveHtmlButton = document.querySelector('#save-html');
 const showFileButton = document.querySelector('#show-file');
 const openInDefaultButton = document.querySelector('#open-in-default');
-
+const currentWindow = remote.getCurrentWindow();
 ///////////////////
 // ------ Functions
 const renderMarkdownToHtml = (markdown) => {
@@ -27,8 +27,12 @@ markdownView.addEventListener('keyup', (event) => {
 });
 
 openFileButton.addEventListener('click', () => {
-    mainProcess.getFileFromUser();
+    mainProcess.getFileFromUser(currentWindow);
 });
+
+newFileButton.addEventListener('click', () => {
+    mainProcess.createWindow();
+})
 
 ipcRenderer.on('file-opened', (event, file, content) => {
     //listen from mainprocess on channel file-opened for contents and filename
