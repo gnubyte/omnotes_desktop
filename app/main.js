@@ -21,7 +21,9 @@ app.on('ready', () => {
 });
 
 const createWindow = exports.createWindow = () => {
-    let newWindow = new BrowserWindow({ show: false });
+    let newWindow = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: true }
+    });
+    newWindow.webContents.openDevTools();
     newWindow.loadFile('app/index.html');
 
     newWindow.once('ready-to-show', () => {

@@ -1,6 +1,7 @@
 const { remote, ipcRenderer } = require('electron');
 const mainProcess = remote.require('./main.js');
 const marked = require('marked');
+const path = require('path');
 
 // ----- Variables
 const markdownView = document.querySelector('#markdown');
@@ -13,11 +14,24 @@ const saveHtmlButton = document.querySelector('#save-html');
 const showFileButton = document.querySelector('#show-file');
 const openInDefaultButton = document.querySelector('#open-in-default');
 const currentWindow = remote.getCurrentWindow();
+let filePath = null;
+let originalContent = '';
+
 ///////////////////
 // ------ Functions
 const renderMarkdownToHtml = (markdown) => {
     htmlView.innerHTML = marked(markdown, { sanitize: true});
 };
+
+const saveNoteToOM = (markdown) => {
+    /* takes markdown and passes it to the OM server.
+     * If the content is different than the last dif
+     * we have on server, save it
+     * */
+
+}
+
+
 
 //////////////////
 // ---- event listeners
@@ -37,6 +51,9 @@ newFileButton.addEventListener('click', () => {
 ipcRenderer.on('file-opened', (event, file, content) => {
     //listen from mainprocess on channel file-opened for contents and filename
     //takes two args: channel and a callback function w/ the action to take when renderer process rcvs msg on the channel
+    filePath = file;
+    originalContent = content;
+
     markdownView.value = content;
     renderMarkdownToHtml(content);
 })
