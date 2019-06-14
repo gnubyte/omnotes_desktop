@@ -4,7 +4,8 @@ const fs = require('fs'); //nodes filesystem lib
 
 let mainWindow = null;
 const windows = new Set();
-
+// -----------------------------------
+// Event Listeners
 app.on('ready', () => {
     createWindow();
     //mainWindow = new BrowserWindow({show: false});
@@ -20,6 +21,20 @@ app.on('ready', () => {
     //});
 });
 
+app.on('will-finish-launching', () => {
+    app.on('open-file', (event, file) => {
+        const win = createWindow();
+        win.once('ready-to-show', () => {
+            openFile(win, file);
+        });
+    });
+});
+
+// End Event Listeners
+// --------------------------------------
+
+// --------------------------------------
+// Functions
 const createWindow = exports.createWindow = () => {
     let newWindow = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: true }
     });
@@ -55,8 +70,14 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
 };
 
     
-const openFile = (targetWindow, file) => {
+const openFile = exports.openFile = (targetWindow, file) => {
     const content = fs.readFileSync(file).toString();
+    app.addRecentDocument(file);
+    targetWindow.setRepresentedFilename(file);
     targetWindow.webContents.send('file-opened', file, content);
     // send name of file and its contents to renderer process over the file opened channel
+
 }
+
+// End Functions
+// ---------------------------------------------
