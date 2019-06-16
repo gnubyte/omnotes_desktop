@@ -79,5 +79,38 @@ const openFile = exports.openFile = (targetWindow, file) => {
 
 }
 
+const saveHtml = exports.saveHtml = (targetWindow, content) => {
+    /* Save HTML - 
+     * handles opening UI dialogue and writes file
+     */
+    const file = dialog.showSaveDialog(targetWindow, {
+        title: 'Save HTML',
+        defaultPath: app.getPath('documents'),
+        filters: [
+            { name: 'HTML Files', extensions: ['html', 'htm'] }
+        ]
+    });
+
+    if (!file) return;
+
+    fs.writeFileSync(file, content);
+}
+
+const saveMarkdown = exports.saveMarkdown = (targetWindow, file, content) => {
+    if (!file) {
+        file = dialog.showSaveDialog(targetWindow, {
+            title: 'Save Markdown',
+            defaultPath: app.getPath('documents'),
+            filters: [
+                { name: 'Markdown Files', extensions: ['md', 'markdown']}
+            ]
+        });
+    }
+    if (!file) return;
+
+    fs.writeFileSync(file, content);
+    openFile(targetWindow, file);
+}
+
 // End Functions
 // ---------------------------------------------

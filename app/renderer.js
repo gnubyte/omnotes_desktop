@@ -57,6 +57,19 @@ newFileButton.addEventListener('click', () => {
     mainProcess.createWindow();
 })
 
+saveHtmlButton.addEventListener('click', () => {
+    mainProcess.saveHtml(currentWindow, htmlView.innerHTML);
+})
+
+saveMarkdownButton.addEventListener('click', () => {
+    mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value);
+})
+
+revertButton.addEventListener('click', () => {
+    markdownView.value = originalContent;
+    renderMarkdownToHtml(originalContent);
+})
+
 ipcRenderer.on('file-opened', (event, file, content) => {
     //listen from mainprocess on channel file-opened for contents and filename
     //takes two args: channel and a callback function w/ the action to take when renderer process rcvs msg on the channel
@@ -67,4 +80,6 @@ ipcRenderer.on('file-opened', (event, file, content) => {
     renderMarkdownToHtml(content);
     updateUserInterface();
 })
+
+
 //////////////////
