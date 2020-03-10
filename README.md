@@ -1,6 +1,6 @@
 # Openmobo Notes Program
 Markdown editor using electron, nodejs
-
+![omscreenshot]
 ## Installation and debuggging
 
 **debugging**
